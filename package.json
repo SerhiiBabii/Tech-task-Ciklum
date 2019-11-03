@@ -1,7 +1,6 @@
 {
 	"name": "todo-list",
 	"version": "1.0.0",
-	"homepage": "https://serhiibabii.github.io/Tech-task-Ciklum",
 	"description": "",
 	"main": "gulpfile.babel.js",
 	"dependencies": {},
