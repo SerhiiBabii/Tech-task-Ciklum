@@ -1,0 +1,20 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  border-bottom: 1px solid black;
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+textarea {
+  resize: none;
+}
+
+footer {
+  border-top: 1px solid black;
+  padding-left: 20px;
+  margin-top: 20px;
+}
