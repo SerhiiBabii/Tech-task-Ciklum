@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/png" href="./static/favicon/favicon.png">
+    <title>TODO List</title>
+    <link rel="stylesheet" href="./build/css/main.min.css" />
+  </head>
+
+  <body>
+    
+    <header>
+      <h1>TODO List</h1>
+    </header>
+
+    <section class="list">
+      <input class="list__input" name="list-input" type="text" placeholder="search by title" />
+      <select class="list__select-status" name="status">
+        <option value="all">all</option>
+        <option value="open">open</option>
+        <option value="done">done</option>
+      </select>
+      <select class="list__select-priority" name="priority" id="">
+        <option value="all">all</option>
+        <option value="high">high</option>
+        <option value="normal">normal</option>
+        <option value="low">low</option>
+      </select>
+      <button class="list__button">Create</button>
+    </section>
+
+    <section class="modal">
+      <div class="modal__fade"></div>
+      <div class="modal__form">
+        <div class="modal__part">
+          <label for="title">Title</label>
+          <input type="text" id="title" placeholder="Title" />
+        </div>
+        <div class="modal__part">
+          <label for="description">Description</label>
+          <textarea name="" id="description" cols="30" rows="8" placeholder="Description"></textarea>
+        </div>
+        <div class="modal__part">
+          <label for="priority">Priority</label>
+          <select name="" id="priority">
+            <option value="high">high</option>
+            <option value="normal">normal</option>
+            <option value="low">low</option>
+          </select>
+        </div>
+        <div class="modal__buttons">
+          <button class="modal__button-cancel">Cancel</button>
+          <button class="modal__button-save">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="todo"></section>
+
+    <footer>
+      <h4>Serhii Babii</h4>
+    </footer>
+
+    <script src="./build/js/main.min.js"></script>
+  </body>
+</html>
