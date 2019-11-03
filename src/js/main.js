@@ -8,12 +8,38 @@ const modalCancel = document.querySelector('.modal__button-cancel');
 const body = document.querySelector('body');
 const modalFade = document.querySelector('.modal__fade');
 
-let currentIndex = null;
+let currentId = null;
 let taskArray = [];
+let idForArrayItems = 0;
 
 const titleField = document.getElementById('title');
 const descriptionField = document.getElementById('description');
 const priorityField = document.getElementById('priority');
+
+function findArrayElement(arr, id) {
+  let currentElement = null;
+  arr.forEach((element) => {
+    if (element.id === Number(id)) {
+      currentElement = element;
+    }
+  });
+  return currentElement;
+}
+
+function replaceArrayElement(array, item) {
+  const newArr = array.map((element) => {
+    if (element.id === item.id) {
+      return item;
+    }
+    return element;
+  });
+  return newArr;
+}
+
+function removeArrayElement(array, item) {
+  const newArr = array.filter((element) => element.id !== item.id);
+  return newArr;
+}
 
 function clearSearchFields() {
   listInput.value = '';
@@ -22,14 +48,15 @@ function clearSearchFields() {
 }
 
 function createTask(index) {
-  if (typeof index === 'number') {
-    const { title, description, priority, } = taskArray[index];
+  if (typeof index === 'number' && !Number.isNaN(index)) {
+    const currentElement = findArrayElement(taskArray, index);
+    const { title, description, priority, id, } = currentElement;
     titleField.value = title;
     descriptionField.value = description;
-    priorityField.selectedIndex = priority;
-    currentIndex = index;
+    priorityField.value = priority;
+    currentId = id;
   } else {
-    currentIndex = null;
+    currentId = null;
   }
 
   modal.style.display = 'block';
@@ -38,14 +65,17 @@ function createTask(index) {
 }
 
 function deleteTask(index) {
-  taskArray = [...taskArray.slice(0, index), ...taskArray.slice(index + 1),];
+  const currentElement = findArrayElement(taskArray, index);
+  taskArray = removeArrayElement(taskArray, currentElement);
   createElements(taskArray);
   clearSearchFields();
 }
 
 function doneTask(index) {
-  const currentDone = !taskArray[index].done;
-  taskArray[index] = { ...taskArray[index], done: currentDone, };
+  let currentElement = findArrayElement(taskArray, index);
+  const currentDone = !currentElement.done;
+  currentElement = { ...currentElement, done: currentDone, };
+  taskArray = replaceArrayElement(taskArray, currentElement);
   createElements(taskArray);
   clearSearchFields();
 }
@@ -65,16 +95,16 @@ function addEvents(todoButton, todoButtons, todoButtonsEdit, todoButtonDelete, t
     element.addEventListener('click', () => showTodoBurrons(index));
   });
 
-  todoButtonsEdit.forEach((element, index) => {
-    element.addEventListener('click', () => createTask(index));
+  todoButtonsEdit.forEach((element) => {
+    element.addEventListener('click', () => createTask(Number(element.name)));
   });
 
-  todoButtonDelete.forEach((element, index) => {
-    element.addEventListener('click', () => deleteTask(index));
+  todoButtonDelete.forEach((element) => {
+    element.addEventListener('click', () => deleteTask(element.name));
   });
 
-  todoButtonDone.forEach((element, index) => {
-    element.addEventListener('click', () => doneTask(index));
+  todoButtonDone.forEach((element) => {
+    element.addEventListener('click', () => doneTask(element.name));
   });
 }
 
@@ -93,9 +123,9 @@ function createElements(arrElements) {
       out += `<p class="todo__priority">${element.priority}</p>`;
       out += '<button class="todo__button">...</button>';
       out += '<div class="todo__buttons">';
-      out += '<button class="todo__buttons-done">done</button>';
-      out += '<button class="todo__buttons-edit">edit</button>';
-      out += '<button class="todo__buttons-delete">delete</button>';
+      out += `<button class="todo__buttons-done" name=${element.id}>done</button>`;
+      out += `<button class="todo__buttons-edit" name=${element.id}>edit</button>`;
+      out += `<button class="todo__buttons-delete" name=${element.id}>delete</button>`;
       out += '</div>';
       out += '</div>';
       out += '</div>';
@@ -125,25 +155,30 @@ function saveTask(index) {
   const valueCondition = titleField.value && descriptionField.value && priorityField.value;
 
   if (valueCondition && emptyCondition) {
-    if (typeof index === 'number') {
-      taskArray[index] = {
+    if (typeof index === 'number' && !Number.isNaN(index)) {
+      let currentElement = findArrayElement(taskArray, index);
+      currentElement = {
+        ...currentElement,
         title: titleField.value,
         description: descriptionField.value,
         priority: priorityField.value,
         done: false,
       };
+      taskArray = replaceArrayElement(taskArray, currentElement);
     } else {
+      idForArrayItems += 1;
       taskArray.push({
         title: titleField.value,
         description: descriptionField.value,
         priority: priorityField.value,
         done: false,
+        id: idForArrayItems,
       });
     }
 
     clearInputs();
     createElements(taskArray);
-    currentIndex = null;
+    currentId = null;
     modal.style.display = 'none';
     clearSearchFields();
   } else {
@@ -247,7 +282,7 @@ function cancelWithEsc(e) {
 }
 
 btnCreate.addEventListener('click', createTask);
-modalSave.addEventListener('click', () => saveTask(currentIndex));
+modalSave.addEventListener('click', () => saveTask(currentId));
 modalCancel.addEventListener('click', cancelTask);
 
 body.addEventListener('keyup', cancelWithEsc);
