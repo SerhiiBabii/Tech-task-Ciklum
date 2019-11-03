@@ -1,0 +1,78 @@
+.todo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  min-width: 150px;
+  height: auto;
+  padding: 20px;
+  position: relative;
+
+  &__done {
+    background-color: #E5E5E5;
+  }
+
+  &__elements {
+    width: 150px;
+    height: auto;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 5px 10px;
+  }
+
+  &__elements.todo__done{
+    position: relative;
+  }
+
+  &__elements.todo__done:before {
+    content: url(../../static/img/check-box.png);
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: -9px;
+    left: 155px;
+  }
+
+  &__descriptions {
+    word-break: break-all
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  &__button {
+    height: 20px;
+    border-radius: 5px;
+  }
+
+  &__buttons {
+    width: 60px;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    left: 80px;
+    top: 50px;
+  }
+
+  &__buttons button {
+    border: 1px solid black;
+    cursor: pointer;
+  }
+
+  &__buttons button:hover {
+    background-color: #ccc;
+  }
+
+  &__buttons button:active {
+    background-color: rgb(107, 107, 107);
+  }
+
+  &__priority {
+    border: 1px dashed black;
+    border-radius: 5px;
+    padding: 5px;
+  }
+}
